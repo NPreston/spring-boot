@@ -1,12 +1,32 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Message list: Sweater</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <div>
+        <form action="/add" method="post">
+            <input type="text" name="text" placeholder="Input message" />
+            <input type="text" name="tag" placeholder="Tag name" />
+            <button type="submit">Add</button>
+        </form>
+    </div>
 
-<div>{{ some }}</div>
+
+    <div>Message list</div>
+
+    <form action="/filter" method="post">
+        <input type="text" name="filter" />
+        <button type="submit">Filter </button>
+    </form>
+    {{#messages}}
+        <div>
+            <b>{{id}}</b>
+            <span>{{text}}</span>
+            <i>{{tag}}</i>
+        </div>
+    {{/messages}}
 
 </body>
 </html>

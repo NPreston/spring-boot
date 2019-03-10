@@ -1,0 +1,54 @@
+version: '3'
+services:
+  sweater:
+    build:
+      context: ./
+      dockerfile: dockerfile-sweater
+    restart: always
+    container_name: sweater
+    working_dir: /var/www/sweater
+    volumes:
+    - ../:/var/www/sweater
+    - ~/.ssh:/root/.ssh
+    - ~/.m2:/root/.m2
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    #command: mvn clean spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - nginx
+      - postgres
+    environment:
+      - JPDA_ADDRESS=5005
+      - JPDA_TRANSPORT=dt_socket
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: dockerfile-nginx
+    restart: always
+    container_name: sweater-nginx
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ../:/var/www/sweater
+
+  postgres:
+    image: postgres
+    container_name: sweater-postgres
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - DEBUG=false
+
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=sweater
