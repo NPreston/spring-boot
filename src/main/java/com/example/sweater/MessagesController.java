@@ -6,22 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
 @Controller
+@RequestMapping("/messages")
 public class MessagesController {
 
     @Autowired
     private MessageRepository messageRepository;
 
     @GetMapping("/")
-    public String main(Map<String, Object> model) {
+    public String list(Map<String, Object> model) {
         Iterable<Message> messages = messageRepository.findAll();
 
         model.put("messages", messages);
-        return "main";
+        return "messages";
     }
 
     @PostMapping("/filter")
@@ -36,7 +38,7 @@ public class MessagesController {
 
         model.put("messages", messages);
 
-        return "main";
+        return "messages";
     }
 
     @PostMapping("/add")
@@ -44,6 +46,6 @@ public class MessagesController {
         Message message = new Message(text, tag);
         messageRepository.save(message);
 
-        return "redirect:/";
+        return "redirect:/messages/";
     }
 }
