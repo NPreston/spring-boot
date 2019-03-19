@@ -1,6 +1,6 @@
-package com.example.sweater;
+package com.example.sweater.controllers;
 
-import com.example.sweater.domain.Message;
+import com.example.sweater.domains.Message;
 import com.example.sweater.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

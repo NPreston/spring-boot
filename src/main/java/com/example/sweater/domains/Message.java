@@ -1,4 +1,4 @@
-package com.example.sweater.domain;
+package com.example.sweater.domains;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
