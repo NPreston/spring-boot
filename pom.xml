@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mustache</artifactId> <!-- шаблонизатор -->
+            <artifactId>spring-boot-starter-freemarker</artifactId> <!-- шаблонизатор -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
