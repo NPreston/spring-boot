@@ -34,7 +34,7 @@ public class MessagesController {
 
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
-        return "messages";
+        return "messages/index";
     }
 
     @PostMapping("/add")

@@ -1,7 +1,6 @@
-<#import "parts/common.ftl" as common>
+<#import "layouts/common.ftl" as common>
 
 <@common.page>
-<div>Hello, user</div>
-<a href="/messages/">Messages list</a>
-<a href="/users/">Users list</a>
+    <h4>Hello, guest</h4>
+    <div>This is a simple clone of Twitter</div>
 </@common.page>
