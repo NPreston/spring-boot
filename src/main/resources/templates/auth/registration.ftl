@@ -4,7 +4,7 @@
 <@common.page>
 
     <h3>Create new user</h3>
-
+    ${message!}
     <@auth.login "/registration" true />
 
 </@common.page>

@@ -3,6 +3,6 @@
 
 <@common.page>
     <h3>Login</h3>
-
+    ${message!}
     <@auth.login "/login" false />
 </@common.page>

@@ -21,6 +21,9 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
+    private String email;
+    private String activationCode;
+
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id")
 //    private Set<Message> messages;

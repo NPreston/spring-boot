@@ -3,17 +3,26 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
         <div class="form-group row">
-            <label for="username" class="col-sm-2 col-form-label">Username</label>
+            <label for="username" class="col-sm-2 col-form-label">Username:</label>
             <div class="col-sm-6">
                 <input type="text" class="form-control" name="username" placeholder="Username">
             </div>
         </div>
         <div class="form-group row">
-            <label for="password" class="col-sm-2 col-form-label">Password</label>
+            <label for="password" class="col-sm-2 col-form-label">Password:</label>
             <div class="col-sm-6">
                 <input type="password" class="form-control" name="password" placeholder="Password">
             </div>
         </div>
+
+        <#if isRegisterForm>
+            <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                <div class="col-sm-6">
+                    <input type="email" class="form-control" name="email" placeholder="some@example.com">
+                </div>
+            </div>
+        </#if>
 
         <#if !isRegisterForm>
             <div class="form-group row">
