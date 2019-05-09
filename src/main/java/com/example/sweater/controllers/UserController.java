@@ -2,29 +2,27 @@ package com.example.sweater.controllers;
 
 import com.example.sweater.domains.Role;
 import com.example.sweater.domains.User;
-import com.example.sweater.repositories.UserRepository;
+import com.example.sweater.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
 @PreAuthorize("hasAuthority('ADMIN')")
 @AllArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
+
+    private final UserService userService;
 
     @GetMapping
     public String index(Model model) {
 
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAll());
 
         return "users/index";
     }
@@ -40,26 +38,19 @@ public class UserController {
 
     @PostMapping("{user}")
     public String store(
+            Model model,
             @PathVariable User user,
             @RequestParam String username,
             @RequestParam Map<String, String> form
     ) {
 
-        user.setUsername(username);
+        boolean isUpdated = userService.update(user, username, form);
 
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
+        if (isUpdated) {
+            model.addAttribute("message", "User successfully updated");
+        } else {
+            model.addAttribute("message", "Update error!");
         }
-
-        userRepository.save(user);
 
         return "redirect:/users";
     }

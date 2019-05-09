@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +19,10 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MailSender mailSender;
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,7 +41,12 @@ public class UserService implements UserDetailsService {
         user.setActivationCode(UUID.randomUUID().toString());
         userRepository.save(user);
 
+        sendActivationMessage(user);
 
+        return true;
+    }
+
+    boolean sendActivationMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                 "Hello, %s! \n" +
@@ -48,9 +57,11 @@ public class UserService implements UserDetailsService {
             );
 
             mailSender.send(user.getEmail(), user.getActivationCode(), message);
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public boolean activate(String code) {
@@ -66,5 +77,25 @@ public class UserService implements UserDetailsService {
         }
 
         return false;
+    }
+
+    public boolean update(User user, String username, Map<String, String> form) {
+        user.setUsername(username);
+
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+
+        user.getRoles().clear();
+
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+
+        userRepository.save(user);
+
+        return true;
     }
 }
